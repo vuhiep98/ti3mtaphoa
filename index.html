@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Tulips</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 100px;
+            overflow: hidden;
+        }
+
+        .button-container {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #noButton {
+            position: absolute;
+        }
+
+        .tulip {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            width: 20px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50% 50% 0 0;
+            animation: rise 3s ease-out forwards;
+        }
+
+        .stem {
+            position: absolute;
+            bottom: -100px;
+            left: calc(50% + 10px);
+            width: 5px;
+            height: 80px;
+            background-color: green;
+            animation: rise 3s ease-out forwards;
+        }
+
+        .leaf {
+            position: absolute;
+            bottom: -80px;
+            left: calc(50% + 5px);
+            width: 20px;
+            height: 10px;
+            background-color: green;
+            border-radius: 50%;
+            transform: rotate(30deg);
+            animation: rise 3s ease-out forwards;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(100px) scale(0.5);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Do you like tulips?</h2>
+    <div class="button-container">
+        <button id="yesButton" onclick="showTulips()">Yes</button>
+        <button id="noButton" onmouseover="moveNoButton()">No</button>
+    </div>
+    <div id="tulipContainer"></div>
+
+    <script>
+        function showTulips() {
+            let container = document.getElementById("tulipContainer");
+            container.innerHTML = ""; // Clear previous tulips
+            for (let i = 0; i < 10; i++) {
+                let tulip = document.createElement("div");
+                tulip.className = "tulip";
+                tulip.style.left = `${Math.random() * 80 + 10}%`;
+                tulip.style.animationDelay = `${Math.random()}s`;
+
+                let stem = document.createElement("div");
+                stem.className = "stem";
+                stem.style.left = tulip.style.left;
+                stem.style.animationDelay = tulip.style.animationDelay;
+
+                let leaf = document.createElement("div");
+                leaf.className = "leaf";
+                leaf.style.left = tulip.style.left;
+                leaf.style.animationDelay = tulip.style.animationDelay;
+
+                container.appendChild(stem);
+                container.appendChild(leaf);
+                container.appendChild(tulip);
+            }
+        }
+
+        function moveNoButton() {
+            let button = document.getElementById("noButton");
+            let x = Math.random() * (window.innerWidth - 100);
+            let y = Math.random() * (window.innerHeight - 50);
+            button.style.left = `${x}px`;
+            button.style.top = `${y}px`;
+        }
+    </script>
+</body>
+
+</html>
