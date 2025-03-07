@@ -345,6 +345,33 @@
             transform: none !important;
             /* Override existing hover effect */
         }
+
+        /* Add flying hearts styles */
+        .flying-hearts {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .flying-heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff69b4;
+            opacity: 0;
+            transform-origin: center;
+        }
+
+        @keyframes flyHeart {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--r));
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -665,7 +692,11 @@
 
         <!-- Modified Button Section -->
         <section class="button-section">
-            <div><button class="btn btn-secondary" onclick="page12()">Thôi được rồi 🤷‍♀️</button></div>
+            <div>
+                <button class="btn btn-secondary" onclick="page12()" onmouseenter="createFlyingHearts(event)">
+                    Thôi được rồi 🤷‍♀️
+                </button>
+            </div>
 
             <div>
                 <button class="btn btn-danger" onmouseover="moveButton(this)">
@@ -791,6 +822,38 @@
             button.style.position = "fixed";
             button.style.left = `${newX}px`;
             button.style.top = `${newY}px`;
+        }
+
+        function createFlyingHearts(event) {
+            const button = event.target;
+            const hearts = document.createElement('div');
+            hearts.className = 'flying-hearts';
+            hearts.style.left = `${button.offsetLeft}px`;
+            hearts.style.top = `${button.offsetTop}px`;
+
+            // Create multiple hearts
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'flying-heart';
+                heart.textContent = '♥';
+
+                // Random position and rotation
+                const tx = (Math.random() - 0.5) * 200; // spread X
+                const ty = (Math.random() - 0.8) * 200; // spread Y up more than down
+                const rotation = (Math.random() - 0.5) * 720; // rotation degrees
+
+                heart.style.setProperty('--tx', `${tx}px`);
+                heart.style.setProperty('--ty', `${ty}px`);
+                heart.style.setProperty('--r', `${rotation}deg`);
+
+                heart.style.animation = `flyHeart 1s ease-out forwards`;
+                heart.style.animationDelay = `${Math.random() * 0.5}s`;
+
+                hearts.appendChild(heart);
+            }
+
+            button.parentElement.appendChild(hearts);
+            setTimeout(() => hearts.remove(), 2000); // Clean up after animation
         }
     </script>
 </body>
